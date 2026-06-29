@@ -24,7 +24,7 @@ always respond with a Oryx_Event_Code or a Oryx_Error_Code.
 #    define RAW_EPSIZE 32
 #endif
 
-#define ORYX_PROTOCOL_VERSION 0x04
+#define ORYX_PROTOCOL_VERSION 0x05
 #define ORYX_STOP_BIT -2
 
 enum Oryx_Command_Code {
@@ -39,6 +39,8 @@ enum Oryx_Command_Code {
     ORYX_UPDATE_BRIGHTNESS,
     ORYX_SET_RGB_LED_ALL,
     ORYX_STATUS_LED_CONTROL,
+    ORYX_SET_AUTOMOUSE,
+    ORYX_GET_AUTOMOUSE,
     ORYX_GET_PROTOCOL_VERSION = 0xFE,
 };
 
@@ -55,6 +57,7 @@ enum Oryx_Event_Code {
     ORYX_EVT_TOGGLE_SMART_LAYER,
     ORYX_EVT_TRIGGER_SMART_LAYER,
     ORYX_EVT_STATUS_LED_CONTROL,
+    ORYX_EVT_AUTOMOUSE,
     ORYX_EVT_GET_PROTOCOL_VERSION = 0XFE,
     ORYX_EVT_ERROR                = 0xFF,
 };
