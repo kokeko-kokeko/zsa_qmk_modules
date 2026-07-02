@@ -70,6 +70,18 @@ static bool navigator_turbo_layer_active(void) {
 }
 #endif
 
+#ifdef _NAVIGATOR_DRAG_SCROLL_HAS_LAYERS
+static const uint8_t navigator_drag_scroll_layers[] = NAVIGATOR_DRAG_SCROLL_LAYERS;
+#define _NAVIGATOR_DRAG_SCROLL_LAYER_COUNT (sizeof(navigator_drag_scroll_layers) / sizeof(navigator_drag_scroll_layers[0]))
+
+static bool navigator_drag_scroll_layer_active(void) {
+    for (uint8_t i = 0; i < _NAVIGATOR_DRAG_SCROLL_LAYER_COUNT; i++) {
+        if (layer_state_is(navigator_drag_scroll_layers[i])) return true;
+    }
+    return false;
+}
+#endif
+
 report_mouse_t pointing_device_task_navigator_trackball(report_mouse_t mouse_report) {
     // Apply rotation transform to match physical trackball orientation
 #if _NAVIGATOR_ROTATION == 90
@@ -109,7 +121,14 @@ report_mouse_t pointing_device_task_navigator_trackball(report_mouse_t mouse_rep
         mouse_report.x /= NAVIGATOR_AIM_DIVIDER;
         mouse_report.y /= NAVIGATOR_AIM_DIVIDER;
     }
-    if (set_scrolling) {
+    // Drag scroll converts trackball motion into scroll events. It can be
+    // driven by the DRAG_SCROLL/TOGGLE_SCROLL keycodes or by activating one
+    // of the configured drag scroll layers.
+    bool scroll_active = set_scrolling;
+#ifdef _NAVIGATOR_DRAG_SCROLL_HAS_LAYERS
+    scroll_active = scroll_active || navigator_drag_scroll_layer_active();
+#endif
+    if (scroll_active) {
         // Accumulate scroll movement
         scroll_accumulated_h += (float)mouse_report.x / NAVIGATOR_SCROLL_DIVIDER;
         scroll_accumulated_v += (float)mouse_report.y / NAVIGATOR_SCROLL_DIVIDER;
