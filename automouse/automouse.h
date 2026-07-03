@@ -82,6 +82,17 @@
 #    define AUTOMOUSE_ONESHOT_TIMEOUT_TRACKPAD AUTOMOUSE_ONESHOT_TIMEOUT
 #endif
 
+// Compile-time default enable state per device. Set to false to keep a device
+// from triggering automouse at all (e.g. when only the other device has an
+// automouse layer configured). The runtime per-device API and keycodes can
+// still re-enable it; the global automouse_enable() restores these defaults.
+#ifndef AUTOMOUSE_ENABLED_TRACKBALL
+#    define AUTOMOUSE_ENABLED_TRACKBALL true
+#endif
+#ifndef AUTOMOUSE_ENABLED_TRACKPAD
+#    define AUTOMOUSE_ENABLED_TRACKPAD true
+#endif
+
 #ifndef AUTOMOUSE_DEBOUNCE
 #    define AUTOMOUSE_DEBOUNCE 25
 #endif

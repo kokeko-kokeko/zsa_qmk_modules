@@ -22,8 +22,12 @@ static struct {
     bool               enabled[AUTOMOUSE_DEVICE_COUNT];
     bool               oneshot_triggered;
 } state = {
-    .enabled = {[AUTOMOUSE_DEVICE_TRACKBALL] = true, [AUTOMOUSE_DEVICE_TRACKPAD] = true},
+    .enabled = {[AUTOMOUSE_DEVICE_TRACKBALL] = AUTOMOUSE_ENABLED_TRACKBALL, [AUTOMOUSE_DEVICE_TRACKPAD] = AUTOMOUSE_ENABLED_TRACKPAD},
 };
+
+static bool automouse_default_enabled_for(automouse_device_t dev) {
+    return dev == AUTOMOUSE_DEVICE_TRACKPAD ? AUTOMOUSE_ENABLED_TRACKPAD : AUTOMOUSE_ENABLED_TRACKBALL;
+}
 
 // Per-device settings. Each lookup returns the compile-time value for the device,
 // every one defaulting to the global in automouse.h.
@@ -163,8 +167,11 @@ static void automouse_accumulate(automouse_device_t dev, int16_t x, int16_t y, i
 // --- Public API ---
 
 void automouse_enable(void) {
+    // Restore the compile-time defaults rather than forcing every device on,
+    // so a device excluded from automouse in the build stays excluded when
+    // automouse is globally toggled back on.
     for (uint8_t i = 0; i < AUTOMOUSE_DEVICE_COUNT; i++) {
-        state.enabled[i] = true;
+        state.enabled[i] = automouse_default_enabled_for((automouse_device_t)i);
     }
 }
 
