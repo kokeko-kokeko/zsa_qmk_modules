@@ -16,7 +16,7 @@
 #include "report.h"
 #include "timer.h"
 
-#if COMMUNITY_MODULE_AUTOMOUSE_ENABLE == TRUE
+#ifdef COMMUNITY_MODULE_AUTOMOUSE_ENABLE
 #    include <automouse.h>
 #endif
 
@@ -462,7 +462,7 @@ bool navigator_trackpad_ptp_task(void) {
     uint8_t buttons = sensor_report.buttons & BUTTON_PRIMARY;
     bool button_changed = (buttons != prev_buttons);
 
-#if COMMUNITY_MODULE_AUTOMOUSE_ENABLE == TRUE
+#ifdef COMMUNITY_MODULE_AUTOMOUSE_ENABLE
     // Feed primary-contact motion to automouse so a finger moving on the pad can
     // activate the mouse layer. This runs regardless of input mode: in PTP mode
     // the host derives cursor motion from the absolute contacts we emit, so there

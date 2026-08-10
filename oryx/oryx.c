@@ -6,7 +6,7 @@
 #include "oryx.h"
 #include "action_util.h"
 
-#if COMMUNITY_MODULE_AUTOMOUSE_ENABLE == TRUE
+#ifdef COMMUNITY_MODULE_AUTOMOUSE_ENABLE
 #    include <automouse.h>
 #endif
 
@@ -289,7 +289,7 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
             break;
         }
         case ORYX_SET_AUTOMOUSE: // param[0] = device index, param[1] = enabled
-#if COMMUNITY_MODULE_AUTOMOUSE_ENABLE == TRUE
+#ifdef COMMUNITY_MODULE_AUTOMOUSE_ENABLE
             automouse_set_device_enabled(param[0], param[1]);
             // fall through to report the resulting state
 #else
@@ -297,7 +297,7 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
             break;
 #endif
         case ORYX_GET_AUTOMOUSE:
-#if COMMUNITY_MODULE_AUTOMOUSE_ENABLE == TRUE
+#ifdef COMMUNITY_MODULE_AUTOMOUSE_ENABLE
         {
             uint8_t event[RAW_EPSIZE];
             event[0] = ORYX_EVT_AUTOMOUSE;
