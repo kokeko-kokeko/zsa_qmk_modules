@@ -19,6 +19,8 @@ static int8_t   jiggle_direction      = 1;
 #    define MOUSE_JIGGLER_MOVEMENT 1
 #endif
 
+#undef STATUS_LED_1
+
 bool mouse_jiggler_is_enabled(void) {
     return mouse_jiggler_enabled;
 }
@@ -31,7 +33,7 @@ void mouse_jiggler_enable(void) {
 void mouse_jiggler_disable(void) {
     mouse_jiggler_enabled = false;
 #ifdef STATUS_LED_1
-    //STATUS_LED_1(false);
+    STATUS_LED_1(false);
 #endif
 }
 
@@ -62,7 +64,7 @@ bool process_record_mousejiggler(uint16_t keycode, keyrecord_t *record) {
 void housekeeping_task_mousejiggler(void) {
     if (mouse_jiggler_enabled) {
 #ifdef STATUS_LED_1
-        //STATUS_LED_1(true);
+        STATUS_LED_1(true);
 #endif
         if (timer_elapsed(mouse_jiggler_timer) > MOUSE_JIGGLER_INTERVAL_MS) {
             mouse_jiggler_timer = timer_read();
