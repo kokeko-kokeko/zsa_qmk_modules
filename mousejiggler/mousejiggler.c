@@ -19,6 +19,7 @@ static int8_t   jiggle_direction      = 1;
 #    define MOUSE_JIGGLER_MOVEMENT 1
 #endif
 
+// disabla MJ LED
 #undef STATUS_LED_1
 
 bool mouse_jiggler_is_enabled(void) {
